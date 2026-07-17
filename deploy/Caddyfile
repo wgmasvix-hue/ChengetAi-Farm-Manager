@@ -1,0 +1,12 @@
+# Caddy reverse proxy for ChengetAi Farm Manager.
+# Terminates HTTPS for farm.chengetailabs.co.zw with automatic Let's Encrypt
+# certificates, and proxies requests to the farmOS (www) container.
+
+{
+	email {$ACME_EMAIL}
+}
+
+farm.chengetailabs.co.zw {
+	encode gzip zstd
+	reverse_proxy www:80
+}

@@ -1,0 +1,57 @@
+##
+# Production stack for ChengetAi Farm Manager at https://farm.chengetailabs.co.zw
+#
+# Copy deploy/.env.example to deploy/.env, set a strong POSTGRES_PASSWORD,
+# then run from this directory:
+#
+#     docker compose up -d --build
+#
+# See deploy/README.md for full instructions.
+##
+services:
+
+  db:
+    image: postgres:17
+    volumes:
+      - './db:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: farm
+      POSTGRES_PASSWORD: '${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in deploy/.env}'
+      POSTGRES_DB: farm
+    restart: always
+
+  www:
+    depends_on:
+      - db
+    # Build the image from this fork so the ChengetAi branding is included.
+    # FARMOS_VERSION is the branch or tag of the fork to build (default 4.x).
+    build:
+      context: ../docker
+      target: production
+      args:
+        FARMOS_REPO: 'https://github.com/wgmasvix-hue/ChengetAi-Farm-Manager.git'
+        FARMOS_VERSION: '${FARMOS_VERSION:-4.x}'
+    image: 'chengetailabs/farm-manager:${FARMOS_VERSION:-4.x}'
+    volumes:
+      - './sites:/opt/drupal/web/sites'
+      - './keys:/opt/drupal/keys'
+    restart: always
+
+  proxy:
+    depends_on:
+      - www
+    image: caddy:2-alpine
+    ports:
+      - '80:80'
+      - '443:443'
+    environment:
+      ACME_EMAIL: '${ACME_EMAIL:-admin@chengetailabs.co.zw}'
+    volumes:
+      - './Caddyfile:/etc/caddy/Caddyfile:ro'
+      - 'caddy_data:/data'
+      - 'caddy_config:/config'
+    restart: always
+
+volumes:
+  caddy_data:
+  caddy_config:
