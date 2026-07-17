@@ -9,11 +9,11 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\system\Plugin\Block\SystemPoweredByBlock;
 
 /**
- * Provides a 'Powered by farmOS' block.
+ * Provides a 'Powered by ChengetAi Farm Manager' block.
  */
 #[Block(
   id: 'farm_powered_by_block',
-  admin_label: new TranslatableMarkup('Powered by farmOS'),
+  admin_label: new TranslatableMarkup('Powered by ChengetAi Farm Manager'),
 )]
 class FarmPoweredByBlock extends SystemPoweredByBlock {
 
@@ -21,7 +21,7 @@ class FarmPoweredByBlock extends SystemPoweredByBlock {
    * {@inheritdoc}
    */
   public function build() {
-    return ['#markup' => '<span>' . $this->t('Powered by <a href=":poweredby">farmOS</a>', [':poweredby' => 'https://farmOS.org']) . '</span>'];
+    return ['#markup' => '<span>' . $this->t('Powered by ChengetAi Farm Manager, built on <a href=":poweredby">farmOS</a>', [':poweredby' => 'https://farmOS.org']) . '</span>'];
   }
 
 }

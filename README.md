@@ -1,4 +1,15 @@
-# farmOS
+# ChengetAi Farm Manager
+
+ChengetAi Farm Manager is a web-based application for farm management,
+planning, and record keeping. It is a customised distribution of
+[farmOS](https://farmOS.org), tailored to the ChengetAi standard.
+
+*Chengeta* is a Shona word meaning "to keep" or "to care for" — the heart
+of good farm stewardship.
+
+---
+
+## Built on farmOS
 
 [![Licence](https://img.shields.io/badge/Licence-GPL%202.0-blue.svg)](https://opensource.org/licenses/GPL-2.0/)
 [![Release](https://img.shields.io/github/release/farmOS/farmOS.svg?style=flat)](https://github.com/farmOS/farmOS/releases)

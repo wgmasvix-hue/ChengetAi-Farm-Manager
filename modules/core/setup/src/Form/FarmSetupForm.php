@@ -157,7 +157,7 @@ class FarmSetupForm extends FormBase {
    * Show a setup completion message.
    */
   protected function completeMessage() {
-    $this->messenger()->addStatus($this->t('farmOS setup is complete! Happy record keeping!'));
+    $this->messenger()->addStatus($this->t('ChengetAi Farm Manager setup is complete! Happy record keeping!'));
   }
 
 }

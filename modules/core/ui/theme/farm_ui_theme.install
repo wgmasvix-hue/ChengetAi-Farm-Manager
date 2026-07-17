@@ -28,7 +28,7 @@ function farm_ui_theme_install() {
   $gin_settings->set('preset_accent_color', 'green');
   $gin_settings->set('preset_focus_color', 'orange');
 
-  // Use farmOS logo and favicon.
+  // Use ChengetAi Farm Manager logo and favicon.
   $path = \Drupal::service('extension.list.module')->getPath('farm_ui_theme');
   $gin_settings->set('logo.use_default', FALSE);
   $gin_settings->set('logo.path', $path . '/logo.png');
@@ -41,7 +41,7 @@ function farm_ui_theme_install() {
   // Save Gin settings.
   $gin_settings->save();
 
-  // Create the "Powered by farmOS" block.
+  // Create the "Powered by ChengetAi Farm Manager" block.
   // This must be done in hook_install() instead of config/install because Gin
   // needs to be installed first.
   $values = [
@@ -52,7 +52,7 @@ function farm_ui_theme_install() {
     'weight' => 1000,
     'settings' => [
       'id' => 'farm_powered_by_block',
-      'label' => t('Powered by farmOS'),
+      'label' => t('Powered by ChengetAi Farm Manager'),
       'provider' => 'farm_ui_theme',
       'label_display' => '0',
     ],

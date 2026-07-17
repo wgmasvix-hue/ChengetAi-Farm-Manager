@@ -1,6 +1,6 @@
-name: farmOS
+name: ChengetAi Farm Manager
 type: profile
-description: 'A web-based farm record keeping application.'
+description: 'ChengetAi Farm Manager: a web-based farm management, planning, and record keeping application, built on farmOS.'
 core_version_requirement: ^11
 
 # Drupal.org needs this for usage statistics.
@@ -12,7 +12,7 @@ version: 4.x
 # Declare this profile a distribution and mark it as 'exclusive' so that it is
 # automatically selected during installation.
 distribution:
-  name: farmOS
+  name: ChengetAi Farm Manager
   # Set the default language to English.
   # We do not allow this default site language config to be changed.
   # Instead, we use the "Selected language" detection method to set the default.

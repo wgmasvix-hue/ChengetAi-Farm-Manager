@@ -9,7 +9,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * Tests the "Powered by farmOS" block.
+ * Tests the "Powered by ChengetAi Farm Manager" block.
  */
 #[Group('farm')]
 #[RunTestsInSeparateProcesses]
@@ -23,10 +23,10 @@ class FarmBlockTest extends FarmBrowserTestBase {
   ];
 
   /**
-   * Test that the "Powered by farmOS" block is visible.
+   * Test that the "Powered by ChengetAi Farm Manager" block is visible.
    */
   public function testFarmBlock() {
-    $this->assertSession()->pageTextContains('Powered by farmOS');
+    $this->assertSession()->pageTextContains('Powered by ChengetAi Farm Manager');
   }
 
 }

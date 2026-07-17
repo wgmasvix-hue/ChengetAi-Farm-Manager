@@ -62,7 +62,7 @@ class FarmSettingsForm extends ConfigFormBase {
     $form['default_timezone'] = [
       '#type' => 'select',
       '#title' => $this->t('Default timezone'),
-      '#description' => $this->t('The default timezone of the farmOS server. Note that users can configure individual timezones later.'),
+      '#description' => $this->t('The default timezone of the ChengetAi Farm Manager server. Note that users can configure individual timezones later.'),
       '#options' => $timezones,
       '#default_value' => $system_date->get('timezone.default'),
       '#required' => TRUE,

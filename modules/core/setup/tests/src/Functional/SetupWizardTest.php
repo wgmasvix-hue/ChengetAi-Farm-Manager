@@ -45,7 +45,7 @@ class SetupWizardTest extends FarmBrowserTestBase {
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->pageTextNotContains('Setup progress');
     $this->assertSession()->pageTextNotContains('Step 1: Welcome');
-    $this->assertSession()->pageTextNotContains('Welcome to farmOS');
+    $this->assertSession()->pageTextNotContains('Welcome to ChengetAi Farm Manager');
 
     // Login a user with additional access to the setup wizard.
     $permissions[] = 'access farm setup wizard';
@@ -58,7 +58,7 @@ class SetupWizardTest extends FarmBrowserTestBase {
     $this->assertSession()->pageTextContains('Setup progress');
     $this->assertSession()->pageTextContains('Step 1: Welcome');
     $this->assertSession()->pageTextContains('0%');
-    $this->assertSession()->pageTextContains('Welcome to farmOS');
+    $this->assertSession()->pageTextContains('Welcome to ChengetAi Farm Manager');
     $this->assertSession()->responseContains('value="Continue"');
     $this->assertSession()->responseNotContains('value="Save and continue"');
     $this->assertSession()->responseNotContains('value="Skip"');
@@ -151,7 +151,7 @@ class SetupWizardTest extends FarmBrowserTestBase {
     $this->assertSession()->pageTextContains('100%');
     $this->getSession()->getPage()->pressButton('Finish');
     $this->assertSession()->pageTextNotContains('Setup progress');
-    $this->assertSession()->pageTextContains('farmOS setup is complete! Happy record keeping!');
+    $this->assertSession()->pageTextContains('ChengetAi Farm Manager setup is complete! Happy record keeping!');
 
     // Confirm that we can also go through the setup process via /setup/wizard,
     // and that it redirects back to the dashboard with a message at the end.
@@ -169,7 +169,7 @@ class SetupWizardTest extends FarmBrowserTestBase {
     $this->getSession()->getPage()->pressButton('Finish');
     $this->assertSession()->statusCodeEquals(200);
     $this->assertSession()->addressEquals('');
-    $this->assertSession()->pageTextContains('farmOS setup is complete! Happy record keeping!');
+    $this->assertSession()->pageTextContains('ChengetAi Farm Manager setup is complete! Happy record keeping!');
 
     // Remove the user's "install farm modules" permission and confirm that
     // /setup/wizard/modules is no longer accessible.

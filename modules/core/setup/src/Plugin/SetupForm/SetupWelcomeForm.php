@@ -12,9 +12,9 @@ use Drupal\farm_setup\Attribute\SetupForm;
  */
 #[SetupForm(
   id: 'welcome',
-  title: new TranslatableMarkup('Welcome to farmOS'),
+  title: new TranslatableMarkup('Welcome to ChengetAi Farm Manager'),
   task_title: new TranslatableMarkup('Welcome'),
-  description: new TranslatableMarkup('This will guide you through the process of setting up your farmOS system.'),
+  description: new TranslatableMarkup('This will guide you through the process of setting up your ChengetAi Farm Manager system.'),
   weight: -100,
 )]
 class SetupWelcomeForm extends SetupFormBase {
