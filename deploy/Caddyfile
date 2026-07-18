@@ -1,0 +1,3 @@
+{$FARM_DOMAIN} {
+	reverse_proxy www:80
+}

@@ -6,6 +6,9 @@ Manager (based on farmOS). It provisions:
 - `www` — the ChengetAi Farm Manager web server, built from this repository
   using the Dockerfile in [`../docker`](../docker).
 - `db` — a PostgreSQL 17 database with data persisted in `./db`.
+- `proxy` — a Caddy reverse proxy that serves the site. With `FARM_DOMAIN`
+  set it terminates HTTPS with an automatic Let's Encrypt certificate;
+  otherwise it serves plain HTTP on port 80.
 
 ## Quick start
 
@@ -45,7 +48,7 @@ All settings live in `.env` (see [`.env.example`](.env.example)):
 | `POSTGRES_USER` | `farm` | Database user |
 | `POSTGRES_PASSWORD` | *(required)* | Database password — must be set |
 | `POSTGRES_DB` | `farm` | Database name |
-| `WWW_PORT` | `80` | Host port the site is served on |
+| `FARM_DOMAIN` | *(unset)* | Public domain; enables automatic HTTPS when set |
 | `FARMOS_REPO` | this repository | Git repository the codebase is built from |
 | `FARMOS_VERSION` | `4.x` | Branch or tag to build |
 
@@ -54,6 +57,7 @@ All settings live in `.env` (see [`.env.example`](.env.example)):
 - `./sites` — Drupal site settings and user-uploaded files
 - `./keys` — OAuth2 keys used for API authentication
 - `./db` — PostgreSQL data
+- `./caddy_data` — TLS certificates issued for `FARM_DOMAIN`
 
 These directories are bind-mounted from the host and survive container
 rebuilds. `sites` and `keys` must be owned by user/group ID `33` (`www-data`
@@ -78,8 +82,34 @@ Then run database updates:
 docker compose exec -u www-data www drush updb
 ```
 
-## HTTPS
+## Custom domain and HTTPS
 
-The stack serves plain HTTP. For production use, put a reverse proxy with TLS
-termination (e.g. Caddy, Traefik, or Nginx with certbot) in front of the `www`
-service, and set `WWW_PORT` to an internal port such as `8080`.
+1. At your DNS provider, create an **A record** pointing the domain (e.g.
+   `farm.example.com`) at this server's public IP address, and wait for it
+   to resolve.
+2. Set `FARM_DOMAIN=farm.example.com` in `.env`.
+3. Apply the change:
+
+   ```sh
+   docker compose up -d
+   ```
+
+Caddy requests a Let's Encrypt certificate on first start (ports 80 and 443
+must be reachable from the internet) and renews it automatically. HTTP
+requests are redirected to HTTPS.
+
+Because the site now runs behind a reverse proxy, add the following to
+`sites/default/settings.php` (adjust the host pattern to your domain) so
+that Drupal trusts the proxy's forwarded headers and generates correct
+HTTPS URLs:
+
+```php
+$settings['reverse_proxy'] = TRUE;
+$settings['reverse_proxy_addresses'] = ['172.16.0.0/12'];
+$settings['reverse_proxy_trusted_headers'] =
+  \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_FOR |
+  \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PROTO |
+  \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_HOST |
+  \Symfony\Component\HttpFoundation\Request::HEADER_X_FORWARDED_PORT;
+$settings['trusted_host_patterns'] = ['^farm\.example\.com$'];
+```

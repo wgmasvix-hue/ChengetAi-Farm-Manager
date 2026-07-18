@@ -2,3 +2,5 @@
 db/
 sites/
 keys/
+caddy_data/
+caddy_config/
