@@ -64,6 +64,48 @@ rebuilds. `sites` and `keys` must be owned by user/group ID `33` (`www-data`
 inside the container), which is what the `chown 33:33` step above does. Back
 up all three directories regularly.
 
+## Multi-tenant hosting
+
+The stack supports hosting multiple independent farms (tenants) from one
+server using Drupal's built-in multisite feature. Each tenant gets its own
+subdomain, database, database user, files, and admin account — tenants
+cannot see each other's data.
+
+One-time setup:
+
+1. Set `FARM_DOMAIN` in `.env` (see above) — tenants live under it, e.g.
+   `greenacres.farm.example.com`.
+2. At your DNS provider, add a **wildcard A record** `*.farm.example.com`
+   pointing at this server's IP, so new tenants need no DNS changes.
+
+Create a tenant:
+
+```sh
+./add-tenant.sh greenacres "Green Acres Farm"
+```
+
+This provisions the database, installs the site, configures HTTPS for the
+subdomain, and prints the tenant's URL and admin credentials. Save them —
+they are not stored anywhere else.
+
+Remove a tenant (irreversible — the script asks for confirmation):
+
+```sh
+./remove-tenant.sh greenacres
+```
+
+Per-tenant backups: dump the tenant's database and copy its site
+directory, e.g.
+
+```sh
+docker compose exec -T db pg_dump -U farm tenant_greenacres > tenant_greenacres.sql
+tar czf tenant_greenacres_files.tar.gz sites/greenacres.farm.example.com
+```
+
+All tenants share one codebase, so [updating](#updating) the image updates
+every tenant at once; run the database updates step for each site with
+`drush updb --uri=https://<tenant-domain>`.
+
 ## Updating
 
 Pull the latest code and rebuild:
