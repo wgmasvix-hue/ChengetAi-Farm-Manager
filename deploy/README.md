@@ -88,6 +88,12 @@ This provisions the database, installs the site, configures HTTPS for the
 subdomain, and prints the tenant's URL and admin credentials. Save them —
 they are not stored anywhere else.
 
+List tenants with their database and disk usage:
+
+```sh
+./list-tenants.sh
+```
+
 Remove a tenant (irreversible — the script asks for confirmation):
 
 ```sh
