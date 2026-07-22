@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ChengetAi Farm</string>
+    <string name="farm_title">Welcome to ChengetAi Farm</string>
+    <string name="farm_message">Enter your farm name to open your private farm portal, or leave it empty for the main site.</string>
+    <string name="farm_hint">e.g. greenacres</string>
+    <string name="open_farm">Open my farm</string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_change_farm">Change farm</string>
+    <string name="choose_file">Choose file</string>
+</resources>

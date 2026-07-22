@@ -1,0 +1,3 @@
+# Tenant site blocks are generated in this directory by add-tenant.sh.
+# This placeholder keeps the Caddyfile's glob import valid when no
+# tenants exist yet. Do not delete it.

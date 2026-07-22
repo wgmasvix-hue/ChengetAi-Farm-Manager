@@ -1,0 +1,52 @@
+name: chengetai-farm-manager
+
+services:
+  db:
+    image: postgres:17
+    volumes:
+      - './db:/var/lib/postgresql/data'
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-farm}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in deploy/.env (copy .env.example to .env)}
+      POSTGRES_DB: ${POSTGRES_DB:-farm}
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: always
+
+  www:
+    depends_on:
+      db:
+        condition: service_healthy
+    build:
+      context: ../docker
+      args:
+        FARMOS_REPO: ${FARMOS_REPO:-https://github.com/wgmasvix-hue/ChengetAi-Farm-Manager.git}
+        FARMOS_VERSION: ${FARMOS_VERSION:-4.x}
+    image: chengetai/farm-manager
+    volumes:
+      - './sites:/opt/drupal/web/sites'
+      - './keys:/opt/drupal/keys'
+    restart: always
+
+  proxy:
+    image: caddy:2
+    depends_on:
+      - www
+    # With FARM_DOMAIN set to a real domain, Caddy serves it on 443 with an
+    # automatic Let's Encrypt certificate and redirects 80 to 443. The ':80'
+    # fallback serves plain HTTP on any hostname (e.g. the bare server IP).
+    environment:
+      FARM_DOMAIN: ${FARM_DOMAIN:-:80}
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - './Caddyfile:/etc/caddy/Caddyfile:ro'
+      - './tenants:/etc/caddy/tenants:ro'
+      - './caddy_data:/data'
+      - './caddy_config:/config'
+    restart: always

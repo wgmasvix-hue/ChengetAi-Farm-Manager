@@ -1,0 +1,8 @@
+.env
+db/
+sites/
+keys/
+caddy_data/
+caddy_config/
+tenants/*.caddy
+!tenants/_placeholder.caddy
